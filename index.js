@@ -1,30 +1,21 @@
-import { createServer } from 'http';
+import express from 'express';
 
-const httpServer = createServer((req, res) => {
-  console.log('Request accepted');
+const PORT = 3000;
+const expressApp = express();
 
-  // verb / method
-  console.log(req.method);
+expressApp.use(express.json());
+expressApp.use(express.text());
 
-  // path
-  console.log(req.url);
-
-  // headers
-  console.log(req.headers);
-
-  // body/payload
-  let data = '';
-  let chunkIndex = 0;
-  req.on('data', (chunk) => {
-    data += chunk;
-    chunkIndex++;
-    console.log(chunkIndex);
-  });
-
-  req.on('end', () => {
-    // console.log(data);
-    res.end('request received');
-  });
+expressApp.get('/account', (req, res) => {
+  console.log(req.query); // account?query=example
+  res.send('Your personal account');
 });
 
-httpServer.listen(3000);
+expressApp.put('/product', (req, res) => {
+  console.log(req.body);
+  res.send();
+});
+
+expressApp.listen(PORT, () => {
+  console.log(`Server Up in port ${PORT}`);
+});
